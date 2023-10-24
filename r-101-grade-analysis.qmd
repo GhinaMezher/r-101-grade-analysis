@@ -4,3 +4,56 @@ author: "Ghina Mezher"
 format: html
 ---
 
+```{r message=FALSE}
+here::i_am("r-101-grade-analysis.Rproj")
+library(here)
+library(ggplot2)
+library(dplyr)
+library(vroom)
+library(tidyr)
+```
+
+## Question 1
+```{r}
+df<-vroom(here("grades.csv"))
+na.rm=TRUE
+```
+## Question 2
+```{r}
+df|>
+  summarise("Minimum"=min(`Exam`,na.rm=TRUE),"Maximum"=max(`Exam`,na.rm=TRUE),"Median"=median(`Exam`,na.rm=TRUE),"Mean"=mean(`Exam`,na.rm=TRUE))|>
+  knitr::kable()
+```
+## Question 3
+```{r}
+sum(is.na(df$Exam))
+```
+
+`r sum(is.na(data$Exam)` students who did not pass the final exam is. 
+
+## Question 4
+```{r}
+df|>ggplot(aes(x=Exam))+
+  geom_histogram(binwidth=2,fill="darkred",color="red",na.rm=TRUE)+
+  labs(title= "Distribution of Exam grades",
+       x="Grades to the final exam",
+      y="Frequency of grades")
+```
+
+
+## Question 5
+```{r}
+group_counts<-df|>
+  group_by(Group)|>
+  summarise(Number=n())
+
+knitr::kable(group_counts)
+```
+## Question 6
+```{r}
+ggplot(group_counts,aes(x=Group,y=Number))+
+  geom_bar(fill="green")+
+  labs(title="Number of students per group",x="Groups",y="Number of students")
+```
+
+
