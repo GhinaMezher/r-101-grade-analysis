@@ -66,8 +66,25 @@ ggplot(df,aes(x=Exam, color=Group))+
 #Second option
 ggplot(df,aes(x=Group, y=Exam))+
   geom_boxplot(fill="darkgreen")+
-  labs(title="Distribution of grades to the final exam according to groups",x="Groups",y="Grades to the final exam")
+  labs(title="Distribution of grades to the final exam according to groups",x="Groups",y="Grades to the final exam")+
+  coord_flip()
 ```
-The first graphical
+The first graphical representation to be ccriticized.
+
+## Question 8
+```{r}
+na_grades<-df|>
+  group_by(Group)|>
+  summarise("Number of students missing"=sum(is.na(Exam)))
+
+na_grades
+```
+## Question 9
+```{r}
+ggplot(na_grades,aes(x=Group,y=`Number of students missing`))+
+  geom_col(fill="purple")+
+  labs(title="Missing students to the final exam by group", x="Groups",y="Number of missing students")+
+  coord_flip()
+```
 
 
