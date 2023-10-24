@@ -52,8 +52,22 @@ knitr::kable(group_counts)
 ## Question 6
 ```{r}
 ggplot(group_counts,aes(x=Group,y=Number))+
-  geom_bar(fill="green")+
+  geom_col(fill="darkblue")+
   labs(title="Number of students per group",x="Groups",y="Number of students")
 ```
+## Question 7
+```{r}
+#first option
+ggplot(df,aes(x=Exam, color=Group))+
+  geom_density()
+
+
+
+#Second option
+ggplot(df,aes(x=Group, y=Exam))+
+  geom_boxplot(fill="darkgreen")+
+  labs(title="Distribution of grades to the final exam according to groups",x="Groups",y="Grades to the final exam")
+```
+The first graphical
 
 
