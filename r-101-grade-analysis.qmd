@@ -15,7 +15,7 @@ library(stringr)
 ```
 
 ## Question 1
-```{r}
+```{r message=FALSE}
 df<-vroom(here("grades.csv"))
 na.rm=TRUE
 ```
@@ -123,10 +123,11 @@ knitr::kable(NA_count_online)
 
 ## Question 15
 ```{r}
-#start by calculating the missing grades for each student 
 grades_NA<-df|>
   rowwise()|>
-  mutate(NA_count=sum(is.na(c_across(starts_with("Online")))))|>
+  mutate(NA_count=sum(is.na(c_across(starts_with("Online")))))
+  
+grades_NA_res<-grades_NA|>
   group_by(NA_count)|>
   summarise(mean=mean(Exam,na.rm=TRUE))|>
   ggplot(aes(x=NA_count,y=mean))+
@@ -136,7 +137,30 @@ grades_NA<-df|>
        x="Numbers of online tests missed",
        y="Grade to the exam")
 
-grades_NA
+grades_NA_res
   
 ```
 We add ylim(0,20) to take into account that the exam is graded over 20. However it makes reading the exact values of the exam variable for each column.
+
+## Question 16
+```{r}
+missed<-df|>
+  rowwise()|>
+  mutate("Missed an online test"=any(is.na(c_across(starts_with("MCQ_")))))
+
+missed_id<-missed|>
+  select(Id,`Missed an online test`)
+
+knitr::kable(missed_id)
+  
+```
+## Question 17
+```{r}
+missed_group<-missed|>
+  group_by(Group)|>
+  summarise(P_missed=sum(`Missed an online test`)/n()*100)
+
+knitr::kable(missed_group)
+```
+
+
