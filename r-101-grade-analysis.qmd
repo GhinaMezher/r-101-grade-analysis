@@ -31,9 +31,9 @@ df|>
 ```
 ## Question 3
 ```{r}
-sum(is.na(df$Exam))
+no_pass<-sum(is.na(df$Exam))
 ```
-`r sum(is.na(data$Exam)` students who did not pass the final exam. 
+There are `r no_pass` students who did not pass the final exam. 
 
 ## Question 4
 ```{r}
