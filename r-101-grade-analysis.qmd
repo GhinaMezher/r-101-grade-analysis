@@ -90,4 +90,12 @@ ggplot(na_grades,aes(x=Group,y=`Number of students missing`))+
 reshape_df<-df|>pivot_longer(cols=-c(Id,Group))
 ```
 
+#Question 11
+```{r}
+df|>
+  group_by(Id)|>
+  summarise("Nb of missing grades"=sum(is.na(df)))|>
+  knitr::kable()
+```
+
 
