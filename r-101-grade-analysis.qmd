@@ -129,15 +129,14 @@ grades_NA<-df|>
   
 grades_NA_res<-grades_NA|>
   group_by(NA_count)|>
-  summarise(mean=mean(Exam,na.rm=TRUE))|>
-  ggplot(aes(x=NA_count,y=mean))+
+  summarise(mean=mean(Exam,na.rm=TRUE))
+
+ggplot(grades_NA_res,aes(x=NA_count,y=mean))+
   geom_col()+
   ylim(0,20)+
   labs(title="Exam grades according to number of online tests missed",
        x="Numbers of online tests missed",
        y="Grade to the exam")
-
-grades_NA_res
   
 ```
 We add ylim(0,20) to take into account that the exam is graded over 20. However it makes reading the exact values of the exam variable for each column.
@@ -161,6 +160,20 @@ missed_group<-missed|>
   summarise(P_missed=sum(`Missed an online test`)/n()*100)
 
 knitr::kable(missed_group)
+```
+##Question 18
+```{r}
+Exam_group<-df|>
+  group_by(Group)|>
+  summarise(mean=mean(Exam,na.rm=TRUE))
+
+Exam_missed<-inner_join(missed_group,Exam_group,by="Group")|>
+  ggplot(aes(x=P_missed,y=mean,fill=Group))+
+  geom_hex()+
+  labs(title="Every group's average grade at the Exam according to the percentage of missed MCQ gradse",
+       x="Percentage of students who missed at least one MCQ",
+       y="Average grade to the final exam")
+Exam_missed
 ```
 
 
