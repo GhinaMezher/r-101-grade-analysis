@@ -15,7 +15,7 @@ library(stringr)
 ```
 
 ## Question 1
-```{r message=FALSE}
+```{r}
 df<-vroom(here("grades.csv"))
 na.rm=TRUE
 ```
@@ -121,4 +121,22 @@ NA_count_online<-reshape_df|>filter(str_starts(name,"Online_"))|>
 knitr::kable(NA_count_online) 
 ```
 
+## Question 15
+```{r}
+#start by calculating the missing grades for each student 
+grades_NA<-df|>
+  rowwise()|>
+  mutate(NA_count=sum(is.na(c_across(starts_with("Online")))))|>
+  group_by(NA_count)|>
+  summarise(mean=mean(Exam,na.rm=TRUE))|>
+  ggplot(aes(x=NA_count,y=mean))+
+  geom_col()+
+  ylim(0,20)+
+  labs(title="Exam grades according to number of online tests missed",
+       x="Numbers of online tests missed",
+       y="Grade to the exam")
 
+grades_NA
+  
+```
+We add ylim(0,20) to take into account that the exam is graded over 20. However it makes reading the exact values of the exam variable for each column.
