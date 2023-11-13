@@ -110,6 +110,13 @@ NA_count|>
 ```
 
 ##Question 13
+```{r}
+missed_exam_group<-reshape_df|>
+  filter(str_starts(name,"Exam"))|>
+  group_by(Group)|>
+  summarise("No grade for the exam"=sum(is.na(value)))
+missed_exam_group
+```
 
 
 ## Question 14
