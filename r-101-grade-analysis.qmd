@@ -14,7 +14,7 @@ library(tidyr)
 ```
 
 ## Question 1
-```{r}
+```{r message=FALSE}
 df<-vroom(here("grades.csv"))
 na.rm=TRUE
 ```
@@ -28,7 +28,6 @@ df|>
 ```{r}
 sum(is.na(df$Exam))
 ```
-
 `r sum(is.na(data$Exam)` students who did not pass the final exam is. 
 
 ## Question 4
@@ -69,7 +68,7 @@ ggplot(df,aes(x=Group, y=Exam))+
   labs(title="Distribution of grades to the final exam according to groups",x="Groups",y="Grades to the final exam")+
   coord_flip()
 ```
-The first graphical representation to be ccriticized.
+The first graphical representation to be criticized.
 
 ## Question 8
 ```{r}
@@ -85,6 +84,10 @@ ggplot(na_grades,aes(x=Group,y=`Number of students missing`))+
   geom_col(fill="purple")+
   labs(title="Missing students to the final exam by group", x="Groups",y="Number of missing students")+
   coord_flip()
+```
+## Question 10
+```{r}
+reshape_df<-df|>pivot_longer(cols=-c(Id,Group))
 ```
 
 
