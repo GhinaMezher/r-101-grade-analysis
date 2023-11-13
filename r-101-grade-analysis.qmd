@@ -11,6 +11,7 @@ library(ggplot2)
 library(dplyr)
 library(vroom)
 library(tidyr)
+library(stringr)
 ```
 
 ## Question 1
@@ -76,7 +77,7 @@ na_grades<-df|>
   group_by(Group)|>
   summarise("Number of students missing"=sum(is.na(Exam)))
 
-na_grades
+knitr::kable(na_grades)
 ```
 ## Question 9
 ```{r}
@@ -94,13 +95,30 @@ reshape_df<-df|>pivot_longer(cols=-c(Id,Group))
 ```{r}
 NA_count<-reshape_df|>
   group_by(Id)|>
-  summarise("Missing grades"=sum(is.na(value)))
+  summarise("Missing grade"=sum(is.na(value)))
 
 knitr::kable(NA_count)
 ```
 ## Question 12
 ```{r}
+NA_count|>
+  ggplot(aes(x=Id,y=`Missing grade`))+
+  geom_col()+
+  labs(title="Missing grades per Student",
+       x="Student Id",
+       y="Missing grade count")
+```
 
+##Question 13
+
+
+## Question 14
+```{r}
+NA_count_online<-reshape_df|>filter(str_starts(name,"Online_"))|>
+  group_by(Id)|>
+  summarise("Missing grade"=sum(is.na(value)))
+
+knitr::kable(NA_count_online) 
 ```
 
 
