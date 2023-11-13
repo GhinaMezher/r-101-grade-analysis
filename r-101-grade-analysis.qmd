@@ -92,10 +92,15 @@ reshape_df<-df|>pivot_longer(cols=-c(Id,Group))
 
 #Question 11
 ```{r}
-df|>
+NA_count<-reshape_df|>
   group_by(Id)|>
-  summarise("Nb of missing grades"=sum(is.na(df)))|>
-  knitr::kable()
+  summarise("Missing grades"=sum(is.na(value)))
+
+knitr::kable(NA_count)
+```
+## Question 12
+```{r}
+
 ```
 
 
