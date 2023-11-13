@@ -4,6 +4,8 @@ author: "Ghina Mezher"
 format: html
 ---
 
+Before starting our Grade analysis lab we have to call all libraries used in our code, define the trajectory and call our database onto a variable called "df" for dataframe. 
+
 ```{r message=FALSE}
 here::i_am("r-101-grade-analysis.Rproj")
 library(here)
@@ -19,7 +21,9 @@ library(stringr)
 df<-vroom(here("grades.csv"))
 na.rm=TRUE
 ```
+
 ## Question 2
+
 ```{r}
 df|>
   summarise("Minimum"=min(`Exam`,na.rm=TRUE),"Maximum"=max(`Exam`,na.rm=TRUE),"Median"=median(`Exam`,na.rm=TRUE),"Mean"=mean(`Exam`,na.rm=TRUE))|>
@@ -29,7 +33,7 @@ df|>
 ```{r}
 sum(is.na(df$Exam))
 ```
-`r sum(is.na(data$Exam)` students who did not pass the final exam is. 
+`r sum(is.na(data$Exam)` students who did not pass the final exam. 
 
 ## Question 4
 ```{r}
@@ -39,6 +43,8 @@ df|>ggplot(aes(x=Exam))+
        x="Grades to the final exam",
       y="Frequency of grades")
 ```
+A histogram is a great way to represent distribution of grades as the variable "grades" is a continuous and not discrete. 
+We have chosen the color red because exams are scary!
 
 
 ## Question 5
@@ -49,18 +55,21 @@ group_counts<-df|>
 
 knitr::kable(group_counts)
 ```
+We could stop our code at summarise and simply call on the group_counts variable in order to print the table. However using knitr::kable gives us a cleaner result. 
+
 ## Question 6
 ```{r}
-ggplot(group_counts,aes(x=Group,y=Number))+
+ggplot(group_counts,aes(y=Group,x=Number))+
   geom_col(fill="darkblue")+
   labs(title="Number of students per group",x="Groups",y="Number of students")
 ```
+The variable group is discrete, so a column graph is a great representation. We have chosen to put the groups on the Y axis in order to be able to read each group number as they are all smushed together on the X axis. 
+
 ## Question 7
-```{r}
+```{r warning=FALSE}
 #first option
 ggplot(df,aes(x=Exam, color=Group))+
   geom_density()
-
 
 
 #Second option
@@ -69,7 +78,9 @@ ggplot(df,aes(x=Group, y=Exam))+
   labs(title="Distribution of grades to the final exam according to groups",x="Groups",y="Grades to the final exam")+
   coord_flip()
 ```
-The first graphical representation to be criticized.
+Our first plot represent each group as an individual function with its own color. It is harder to read than the 2nd graph as each individual line is hard to decipher. 
+The second graph however separates each group on its own and gives us the median and maximum value. It gives us additional and clear information that helps us compare groups.
+
 
 ## Question 8
 ```{r}
@@ -90,6 +101,8 @@ ggplot(na_grades,aes(x=Group,y=`Number of students missing`))+
 ```{r}
 reshape_df<-df|>pivot_longer(cols=-c(Id,Group))
 ```
+By writing "-c(Id,Group)" we are able to keep the variables Id and Group unchanged after pivoting. 
+We therefore get for each student Id their group, the test we want to look at in "name" and the grade they got in "value" on the same row.
 
 #Question 11
 ```{r}
