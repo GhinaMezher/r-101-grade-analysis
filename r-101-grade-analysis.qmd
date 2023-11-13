@@ -4,7 +4,7 @@ author: "Ghina Mezher"
 format: html
 ---
 
-Before starting our Grade analysis lab we have to call all libraries used in our code, define the trajectory and call our database onto a variable called "df" for dataframe. 
+Before starting our Grade analysis lab we have to call all libraries used in our code, define the trajectory and call our database onto a variable called "df" for data frame. 
 
 ```{r message=FALSE}
 here::i_am("r-101-grade-analysis.Rproj")
@@ -121,6 +121,7 @@ NA_count|>
        x="Student Id",
        y="Missing grade count")
 ```
+There being a lot of students, the graph is really hard to read, we will see in the following questions how defining the number of missing grades by group is easier to read.
 
 ##Question 13
 ```{r}
@@ -140,6 +141,7 @@ NA_count_online<-reshape_df|>filter(str_starts(name,"Online_"))|>
 
 knitr::kable(NA_count_online) 
 ```
+With the command filter and str_starts we are able to select all the variables concerning online testing without having to type each variable title out. We use the reshaped data frame in order to select the exams we are looking for with the variable "name".
 
 ## Question 15
 ```{r}
@@ -159,7 +161,10 @@ ggplot(grades_NA_res,aes(x=NA_count,y=mean))+
        y="Grade to the exam")
   
 ```
-We add ylim(0,20) to take into account that the exam is graded over 20. However it makes reading the exact values of the exam variable for each column.
+We start by adding a variable to our initial data frame that counts the number of NA values for our online exams. We notice that some students have the same number of missing values for online exams. We must then calculate the mean of the Exam for these students. 
+The second step is to rearrange these values in a separate variable and compute the mean exam grade for each "category" of students (each category being defined by the number of online tests missed).
+We then represent our result in a column graph.
+We add ylim(0,20) to take into account that the exam is graded over 20. However it makes reading the exact values of the exam variable for each column hard.
 
 ## Question 16
 ```{r}
@@ -173,6 +178,9 @@ missed_id<-missed|>
 knitr::kable(missed_id)
   
 ```
+The command any(is.na()) replaces an if command that would go through each exam seeing if there is an NA value. It gives us a TRUE if there is at least one answer TRUE to the is.na() command and FALSE if there is none. 
+Rowwise() makes it possible to read values for each row and is needed to make our any(is.na()) command work.
+
 ## Question 17
 ```{r}
 missed_group<-missed|>
@@ -195,5 +203,5 @@ Exam_missed<-inner_join(missed_group,Exam_group,by="Group")|>
        y="Average grade to the final exam")
 Exam_missed
 ```
-
-
+We decide to give each group a separate color in order to read each group's placement on the graph. 
+With this graph we are able to read the impact of missing at least one MCQ on the final Exam grade. 
